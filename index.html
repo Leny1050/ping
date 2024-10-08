@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ping Service</title>
+    <title>Ping Service with Auto-Run</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,7 +46,8 @@
     </style>
     <script>
         // URL сайта, который мы пингуем
-        const targetUrl = "https://replit.com/@101010tatata101/Fin"; // Замените на URL вашего бота
+        const targetUrl = "https://your-target-url.com"; // Замените на URL вашего бота
+        let failedPingCount = 0; // Количество неудачных пингов
 
         // Функция для отправки пинга
         function pingSite() {
@@ -54,11 +55,18 @@
                 .then(response => {
                     document.getElementById("status").innerText = "Ping successful!";
                     document.getElementById("status").className = "ping-status ping-success";
+                    failedPingCount = 0; // Сброс счетчика ошибок
                 })
                 .catch(error => {
                     document.getElementById("status").innerText = "Ping failed!";
                     document.getElementById("status").className = "ping-status ping-error";
                     console.error("Error pinging site:", error);
+                    failedPingCount++;
+
+                    // Если три пинга подряд неудачны, перезагрузить страницу
+                    if (failedPingCount >= 3) {
+                        location.reload();
+                    }
                 });
         }
 
@@ -66,13 +74,37 @@
         setInterval(pingSite, 300000);
 
         // Отправляем пинг сразу при загрузке страницы
-        window.onload = pingSite;
+        window.onload = function() {
+            pingSite();
+            autoRunReplit();
+        };
+
+        // Функция для автоматического нажатия кнопки Run на Replit
+        function autoRunReplit() {
+            const replitUrl = "https://replit.com/@101010tatata101/Fin"; // URL Replit проекта
+            window.open(replitUrl, "_blank"); // Открываем Replit в новом окне
+
+            // Пытаемся найти кнопку Run (требует доступа к DOM Replit, что может быть ограничено политиками безопасности браузера)
+            setTimeout(() => {
+                const iframe = document.querySelector("iframe"); // Пытаемся найти iframe
+                if (iframe) {
+                    const runButton = iframe.contentWindow.document.querySelector("button[data-testid='run-button']");
+                    if (runButton) {
+                        runButton.click(); // Имитация нажатия на кнопку Run
+                    } else {
+                        console.log("Run button not found.");
+                    }
+                } else {
+                    console.log("Replit iframe not found.");
+                }
+            }, 5000); // Даем время для загрузки страницы Replit
+        }
     </script>
 </head>
 <body>
     <div class="container">
-        <h1>Ping Service</h1>
-        <p>This site is used to ping another website regularly and keep it active.</p>
+        <h1>Ping Service with Auto-Run</h1>
+        <p>This site is used to ping another website and ensure it remains active. It also attempts to restart the Replit bot if needed.</p>
         <div id="status" class="ping-status">Sending initial ping...</div>
     </div>
 </body>
