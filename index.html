@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Service</title>
+    <script>
+        // URL сайта, который мы пингуем
+        const targetUrl = "https://replit.com/@101010tatata101/Fin"; // Замените на URL вашего бота
+
+        // Функция для отправки пинга
+        function pingSite() {
+            fetch(targetUrl)
+                .then(response => {
+                    console.log("Ping successful:", response.status);
+                })
+                .catch(error => {
+                    console.error("Error pinging site:", error);
+                });
+        }
+
+        // Пинг каждые 5 минут (300000 мс)
+        setInterval(pingSite, 300000);
+
+        // Отправляем пинг сразу при загрузке страницы
+        window.onload = pingSite;
+    </script>
+</head>
+<body>
+    <h1>Ping Service</h1>
+    <p>This site is used to ping another website regularly.</p>
+</body>
+</html>
