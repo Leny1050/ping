@@ -46,13 +46,13 @@
     </style>
     <script>
         // URL сайта, который мы пингуем
-        const targetUrl = "https://replit.com/@101010tatata101/Fin"; // Замените на URL вашего бота
+        const targetUrl = "https://replit.com/@101010tatata101/Fin";  // Замените на URL вашего бота
 
         // Функция для отправки пинга
         function pingSite() {
-            fetch(targetUrl)
-                .then(response => {
-                    document.getElementById("status").innerText = "Ping successful!";
+            fetch(targetUrl, { mode: 'no-cors' })  // Используем режим no-cors
+                .then(() => {
+                    document.getElementById("status").innerText = "Ping sent!";
                     document.getElementById("status").className = "ping-status ping-success";
                 })
                 .catch(error => {
