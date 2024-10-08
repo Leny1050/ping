@@ -4,6 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ping Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+        }
+        .ping-status {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .ping-success {
+            background-color: #4caf50;
+            color: white;
+        }
+        .ping-error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
     <script>
         // URL сайта, который мы пингуем
         const targetUrl = "https://replit.com/@101010tatata101/Fin"; // Замените на URL вашего бота
@@ -12,9 +52,12 @@
         function pingSite() {
             fetch(targetUrl)
                 .then(response => {
-                    console.log("Ping successful:", response.status);
+                    document.getElementById("status").innerText = "Ping successful!";
+                    document.getElementById("status").className = "ping-status ping-success";
                 })
                 .catch(error => {
+                    document.getElementById("status").innerText = "Ping failed!";
+                    document.getElementById("status").className = "ping-status ping-error";
                     console.error("Error pinging site:", error);
                 });
         }
@@ -27,7 +70,10 @@
     </script>
 </head>
 <body>
-    <h1>Ping Service</h1>
-    <p>This site is used to ping another website regularly.</p>
+    <div class="container">
+        <h1>Ping Service</h1>
+        <p>This site is used to ping another website regularly and keep it active.</p>
+        <div id="status" class="ping-status">Sending initial ping...</div>
+    </div>
 </body>
 </html>
